@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--引入hibernate核心配置文件约束-->
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!--1、数据库配置信息 必须-->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/class2015?serverTimezone=GMT&amp;useSSL=false&amp;characterEncoding=utf-8</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+        <!--2、hibernate信息 非必须-->
+        <!--2.1查看hibernate底层生成的sql语句-->
+        <property name="show_sql">true</property>
+        <!--2.2格式化hibernate底层生成的sql语句-->
+        <property name="format_sql">true</property>
+        <!--2.3数据库方言-->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <!--2.4配置hibernate自动创建表格,如果数据库表已存在，则更新数据库表，如果数据库表不存在，则创建数据库-->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <!--3、映射关系配置文件信息 必须-->
+        <mapping resource="com/hbnu/config/user.hbm.xml"/>
+
+
+    </session-factory>
+</hibernate-configuration>
