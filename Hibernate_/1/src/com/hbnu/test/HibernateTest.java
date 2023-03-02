@@ -183,16 +183,29 @@ public class HibernateTest {
 
     @Test
     public void queryDataTest() {
-        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-        Session session = sessionFactory.openSession();
+//        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+//        Session session = sessionFactory.openSession();
+        Session session = HibernateUtils.getSession();//获取与本地线程绑定的session对象，需要事务支持
+        Transaction transaction = session.beginTransaction();
 
-        String Hql = "from User";
-        Query<User> query = session.createQuery(Hql, User.class);
-        List<User> userList = query.list();
-        for (User user : userList) {
-            System.out.println(user);
+        //查询所有数据
+//        String Hql = "from User";
+//        Query<User> query = session.createQuery(Hql, User.class);
+//        List<User> userList = query.list();
+//        transaction.commit();
+//        for (User user : userList) {
+//            System.out.println(user);
+//        }
+
+        //查询单一属性
+        String HQL = "select username from User";
+        Query<String> query = session.createQuery(HQL, String.class);
+        List<String> usernames = query.list();
+        for (String username : usernames) {
+            System.out.println(username);
         }
+
         session.close();
-        sessionFactory.close();
+//        sessionFactory.close();
     }
 }
