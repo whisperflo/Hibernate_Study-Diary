@@ -19,6 +19,11 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <!--2.4配置hibernate自动创建表格,如果数据库表已存在，则更新数据库表，如果数据库表不存在，则创建数据库-->
         <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!--配置事务隔离级别 (1~4：数值越大，隔离级别越高)-->
+        <property name="hibernate.connection.isolation">4</property>
+        <!--将session对象绑定到本地线程，保证session对象为但线程对象-->
+        <property name="current_session_context_class">thread</property>
         <!--3、映射关系配置文件信息 必须-->
         <mapping resource="com/hbnu/config/user.hbm.xml"/>
 
