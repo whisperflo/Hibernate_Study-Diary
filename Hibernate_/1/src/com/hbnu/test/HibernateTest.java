@@ -1,6 +1,7 @@
 package com.hbnu.test;
 
 import com.hbnu.pojo.User;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -197,13 +198,45 @@ public class HibernateTest {
 //            System.out.println(user);
 //        }
 
-        //查询单一属性
-        String HQL = "select username from User";
-        Query<String> query = session.createQuery(HQL, String.class);
-        List<String> usernames = query.list();
-        for (String username : usernames) {
-            System.out.println(username);
+//        //查询单一属性
+//        String HQL = "select username from User";
+//        Query<String> query = session.createQuery(HQL, String.class);
+//        List<String> usernames = query.list();
+//        for (String username : usernames) {
+//            System.out.println(username);
+//        }
+
+//        //查询多个属性
+//        String HQL = "select username,address from User";
+//        Query<Object[]> query = session.createQuery(HQL, Object[].class);
+//        List<Object[]> objects = query.list();
+//        for (Object[] object : objects) {
+//            System.out.println(object[0] + "-->" + object[1]);
+//        }
+
+//        //条件查询
+        //?+int型
+//        String HQL = "from User where username=?1 and address=?2";
+//        Query<User> query = session.createQuery(HQL, User.class);
+//        query.setParameter(1, "hjx");
+//        query.setParameter(2, "江苏无锡");
+//        List<User> list = query.list();
+//        for (User user : list) {
+//            System.out.println(user);
+//        }
+
+
+        //条件查询
+        //:+String型
+        String HQL="from User where username=:hhhh and address =:jjjj";
+        Query<User> query = session.createQuery(HQL, User.class);
+        query.setParameter("hhhh","花吉祥");
+        query.setParameter("jjjj","江苏镇江");
+        List<User> list = query.list();
+        for (User user : list) {
+            System.out.println(user);
         }
+
 
         session.close();
 //        sessionFactory.close();
