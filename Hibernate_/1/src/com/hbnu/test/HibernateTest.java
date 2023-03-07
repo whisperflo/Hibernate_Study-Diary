@@ -1,17 +1,19 @@
 package com.hbnu.test;
 
 import com.hbnu.pojo.User;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.annotations.common.reflection.java.generics.IdentityTypeEnvironment;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.testng.annotations.Test;
 import utils.HibernateUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class HibernateTest {
@@ -228,10 +230,10 @@ public class HibernateTest {
 
         //条件查询
         //:+String型
-        String HQL="from User where username=:hhhh and address =:jjjj";
+        String HQL = "from User where username=:hhhh and address =:jjjj";
         Query<User> query = session.createQuery(HQL, User.class);
-        query.setParameter("hhhh","花吉祥");
-        query.setParameter("jjjj","江苏镇江");
+        query.setParameter("hhhh", "花吉祥");
+        query.setParameter("jjjj", "江苏镇江");
         List<User> list = query.list();
         for (User user : list) {
             System.out.println(user);
@@ -240,5 +242,106 @@ public class HibernateTest {
 
         session.close();
 //        sessionFactory.close();
+    }
+
+    @Test
+
+    public void testCriteria() {
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+
+        //所有字段
+//        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+//
+//        Root<User> root = criteriaQuery.from(User.class);//from User
+//        Query<User> query = session.createQuery(criteriaQuery);
+//        List<User> list = query.list();
+//        for (User user : list) {
+//            System.out.println(user);
+//        }
+
+//        //查询指定字段
+//        CriteriaQuery<String> criteriaQuery = criteriaBuilder.createQuery(String.class);
+//        Root<User> root = criteriaQuery.from(User.class);
+//        criteriaQuery.select(root.get("username"));
+//        Query<String> query = session.createQuery(criteriaQuery);
+//        List<String> list = query.list();
+//        for (String username : list) {
+//            System.out.println(username);
+//        }
+
+        //条件查询 select * from tb_user where username='hjx'
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.where(criteriaBuilder.equal(root.get("username"), "hjx"));
+        Query<User> query = session.createQuery(criteriaQuery);
+        List<User> list = query.list();
+        for (User user : list) {
+            System.out.println(user);
+        }
+
+
+    }
+
+    @Test
+    public void testSQLQuery() {
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+
+//        //查询所有字段的数据
+//        String sql = "select * from tb_user";
+//        NativeQuery<User> sqlQuery = session.createSQLQuery(sql);
+//        sqlQuery.addEntity(User.class);
+//        List<User> userList = sqlQuery.list();
+//        for (User user : userList) {
+//            System.out.println(user);
+//        }
+
+//        //查询某一个指定字段的数据
+//        String sql="select name from tb_user";
+//        NativeQuery<String> sqlQuery = session.createSQLQuery(sql);
+////        sqlQuery.addEntity(String.class);//查询所有字段的时候需要加addEntity()方法
+//        List<String> userList = sqlQuery.list();
+//        for (String user : userList) {
+//            System.out.println(user);
+//        }
+
+        //查询多个指定字段的数据
+//        //条件查询（根据用户名和地址查询），和Query对比，和原生JDBC对比
+//        1)
+//        String sql="select * from tb_user where name=? and addr=?";
+//        NativeQuery<User> sqlQuery = session.createSQLQuery(sql);
+//        sqlQuery.addEntity(User.class);
+//        sqlQuery.setParameter(1,"hjx");
+//        sqlQuery.setParameter(2,"江苏无锡");
+//        List<User> userList = sqlQuery.list();
+//        for (User user : userList) {
+//            System.out.println(user);
+//        }
+//        2)
+//        String sql="select * from tb_user where name=?0 and addr=?1";
+//        NativeQuery<User> sqlQuery = session.createSQLQuery(sql);
+//        sqlQuery.addEntity(User.class);
+//        sqlQuery.setParameter(0,"hjx");
+//        sqlQuery.setParameter(1,"江苏无锡");
+//        List<User> userList = sqlQuery.list();
+//        for (User user : userList) {
+//            System.out.println(user);
+//        }
+//        3)
+        String sql="select * from tb_user where name=:hhhh and addr=:jjjj";
+        NativeQuery<User> sqlQuery = session.createSQLQuery(sql);
+        sqlQuery.addEntity(User.class);
+        sqlQuery.setParameter("hhhh","hjx");
+        sqlQuery.setParameter("jjjj","江苏无锡");
+        List<User> userList = sqlQuery.list();
+        for (User user : userList) {
+            System.out.println(user);
+        }
+
     }
 }
