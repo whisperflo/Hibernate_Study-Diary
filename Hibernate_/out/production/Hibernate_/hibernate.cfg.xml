@@ -24,8 +24,14 @@
         <property name="hibernate.connection.isolation">4</property>
         <!--将session对象绑定到本地线程，保证session对象为但线程对象-->
         <property name="current_session_context_class">thread</property>
+
+
+
+
         <!--3、映射关系配置文件信息 必须-->
         <mapping resource="com/hbnu/config/user.hbm.xml"/>
+        <mapping resource="com/hbnu/config/customer.hbm.xml"/>
+        <mapping resource="com/hbnu/config/linkman.hbm.xml"/>
 
 
     </session-factory>
