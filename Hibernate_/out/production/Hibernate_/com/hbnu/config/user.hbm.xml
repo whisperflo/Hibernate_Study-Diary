@@ -21,6 +21,4 @@
         <property name="username" column="name"/>
         <property name="address" column="addr"/>
     </class>
-
-
 </hibernate-mapping>

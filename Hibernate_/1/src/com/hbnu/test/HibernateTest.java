@@ -1,5 +1,7 @@
 package com.hbnu.test;
 
+import com.hbnu.pojo.Customer;
+import com.hbnu.pojo.LinkMan;
 import com.hbnu.pojo.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -333,15 +335,114 @@ public class HibernateTest {
 //            System.out.println(user);
 //        }
 //        3)
-        String sql="select * from tb_user where name=:hhhh and addr=:jjjj";
+        String sql = "select * from tb_user where name=:hhhh and addr=:jjjj";
         NativeQuery<User> sqlQuery = session.createSQLQuery(sql);
         sqlQuery.addEntity(User.class);
-        sqlQuery.setParameter("hhhh","hjx");
-        sqlQuery.setParameter("jjjj","江苏无锡");
+        sqlQuery.setParameter("hhhh", "hjx");
+        sqlQuery.setParameter("jjjj", "江苏无锡");
         List<User> userList = sqlQuery.list();
         for (User user : userList) {
             System.out.println(user);
         }
 
+    }
+
+    @Test
+    public void testOneToManySave() {
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        /*//1)第一种方式 常规方式
+        //准备数据
+
+        Customer customer1 = new Customer();
+        customer1.setName("百度");
+        customer1.setAddress("北京");
+
+        Customer customer2 = new Customer();
+        customer2.setName("腾讯");
+        customer2.setAddress("深圳");
+
+        LinkMan linkMan1 = new LinkMan();
+        linkMan1.setName("小花");
+        linkMan1.setTel("15905288400");
+        linkMan1.setGender("男");
+
+        LinkMan linkMan2 = new LinkMan();
+        linkMan2.setName("小陈");
+        linkMan2.setTel("15905288401");
+        linkMan2.setGender("男");
+
+        LinkMan linkMan3 = new LinkMan();
+        linkMan3.setName("小张");
+        linkMan3.setTel("15905288402");
+        linkMan3.setGender("男");
+
+        LinkMan linkMan4 = new LinkMan();
+        linkMan4.setName("小李");
+        linkMan4.setTel("15905288403");
+        linkMan4.setGender("女");
+
+
+        LinkMan linkMan5 = new LinkMan();
+        linkMan5.setName("小黄");
+        linkMan5.setTel("15905288404");
+        linkMan5.setGender("男");
+
+        //建立关系
+        customer1.getLinkManSet().add(linkMan1);
+        customer1.getLinkManSet().add(linkMan2);
+        customer1.getLinkManSet().add(linkMan3);
+
+        customer2.getLinkManSet().add(linkMan4);
+        customer2.getLinkManSet().add(linkMan5);
+
+        linkMan1.setCustomer(customer1);
+        linkMan2.setCustomer(customer1);
+        linkMan3.setCustomer(customer1);
+        linkMan4.setCustomer(customer2);
+        linkMan5.setCustomer(customer2);
+
+
+        //保存数据
+        //保存客户数据
+        session.save(customer1);
+        session.save(customer2);
+
+        //保存联系人数据
+        session.save(linkMan1);
+        session.save(linkMan2);
+        session.save(linkMan3);
+        session.save(linkMan4);
+        session.save(linkMan5);*/
+
+        //2)第二种方式 级联方式
+        Customer customer3 = new Customer();
+        customer3.setName("小米");
+        customer3.setAddress("武汉");
+
+        LinkMan linkMan6 = new LinkMan();
+        linkMan6.setName("小刘");
+        linkMan6.setTel("028-76165623");
+        linkMan6.setGender("女");
+
+        LinkMan linkMan7 = new LinkMan();
+        linkMan7.setName("小王");
+        linkMan7.setTel("028-76165923");
+        linkMan7.setGender("男");
+
+
+        customer3.getLinkManSet().add(linkMan6);
+        customer3.getLinkManSet().add(linkMan7);
+
+        linkMan6.setCustomer(customer3);
+        linkMan7.setCustomer(customer3);
+
+        session.save(customer3);
+
+
+        //关闭资源
+        session.close();
+        sessionFactory.close();
     }
 }
