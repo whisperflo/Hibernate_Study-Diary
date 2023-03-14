@@ -445,4 +445,43 @@ public class HibernateTest {
         session.close();
         sessionFactory.close();
     }
+
+    @Test
+    public void testOneToManyDelete() {
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        //开启事务
+        Transaction transaction = session.beginTransaction();
+
+        Customer customer = session.get(Customer.class, 3);
+        session.delete(customer);
+        transaction.commit();//提交事务
+
+        session.close();
+        sessionFactory.close();
+    }
+
+    @Test
+    public void testOneToManyUpdate(){
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        //更新操作
+
+        Transaction transaction = session.beginTransaction();
+
+        //这两个对象都是持久态对象
+        Customer customer = session.get(Customer.class, 2);
+        LinkMan linkMan = session.get(LinkMan.class, 3);
+
+        customer.getLinkManSet().add(linkMan);
+        linkMan.setCustomer(customer);
+
+        session.update(customer);//持久态对象此行代码可不写
+        transaction.commit();
+
+        session.close();
+        sessionFactory.close();
+    }
 }

@@ -12,7 +12,8 @@
         <property name="address" column="addr"/>
         <!-- 一的一方-->
         <!-- 级联保存 set标签中添加cascade属性 ="save-update"-->
-        <set name="linkManSet" cascade="save-update">
+        <!-- 在一的方面放弃y键 inverse属性改为true-->
+        <set name="linkManSet" cascade="save-update,delete" inverse="true">
             <!--一个联系人对应多个顾客-->
             <!--hibernate需要双方维护外键
             column：外键名称
