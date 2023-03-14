@@ -31,6 +31,8 @@
         <mapping resource="com/hbnu/config/user.hbm.xml"/>
         <mapping resource="com/hbnu/config/customer.hbm.xml"/>
         <mapping resource="com/hbnu/config/linkman.hbm.xml"/>
+        <mapping resource="com/hbnu/config/player.hbm.xml"/>
+        <mapping resource="com/hbnu/config/role.hbm.xml"/>
 
 
     </session-factory>

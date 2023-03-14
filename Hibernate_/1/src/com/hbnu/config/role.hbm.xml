@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="com.hbnu.pojo.Role" table="tb_role">
+        <id name="rid">
+            <generator class="native"></generator>
+        </id>
+        <property name="name"/>
+
+        <!--在给数据库里面设置字段不要用关键字 desc/asc等等-->
+        <property name="description"/>
+
+        <set name="players" table="tb_pr">
+            <key column="rid"></key>
+            <many-to-many class="com.hbnu.pojo.Player" column="pid"/>
+        </set>
+    </class>
+</hibernate-mapping>

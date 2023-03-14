@@ -16,6 +16,7 @@
         <!--2.2格式化hibernate底层生成的sql语句-->
         <property name="format_sql">true</property>
         <!--2.3数据库方言-->
+        <!--要想真正建立一对多/多对多的关系，必须将数据库方言改为"MySQL55Dialect"-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL55Dialect</property>
         <!--2.4配置hibernate自动创建表格,如果数据库表已存在，则更新数据库表，如果数据库表不存在，则创建数据库-->
         <property name="hibernate.hbm2ddl.auto">update</property>
@@ -26,12 +27,12 @@
         <property name="current_session_context_class">thread</property>
 
 
-
-
         <!--3、映射关系配置文件信息 必须-->
         <mapping resource="com/hbnu/config/user.hbm.xml"/>
         <mapping resource="com/hbnu/config/customer.hbm.xml"/>
         <mapping resource="com/hbnu/config/linkman.hbm.xml"/>
+        <mapping resource="com/hbnu/config/player.hbm.xml"/>
+        <mapping resource="com/hbnu/config/role.hbm.xml"/>
 
 
     </session-factory>

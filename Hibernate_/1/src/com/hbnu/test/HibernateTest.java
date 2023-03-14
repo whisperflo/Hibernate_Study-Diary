@@ -1,8 +1,6 @@
 package com.hbnu.test;
 
-import com.hbnu.pojo.Customer;
-import com.hbnu.pojo.LinkMan;
-import com.hbnu.pojo.User;
+import com.hbnu.pojo.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -463,7 +461,7 @@ public class HibernateTest {
     }
 
     @Test
-    public void testOneToManyUpdate(){
+    public void testOneToManyUpdate() {
         SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
         Session session = sessionFactory.openSession();
 
@@ -483,5 +481,53 @@ public class HibernateTest {
 
         session.close();
         sessionFactory.close();
+    }
+
+    @Test
+    public void testManyToManySave() {
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        //开启事务
+        Transaction transaction = session.beginTransaction();
+        //级联保存
+        //1)准备数据
+        //准备两个玩家三个角色
+        Player player1 = new Player();
+        player1.setName("张大仙");
+        player1.setGender("男");
+
+        Player player2 = new Player();
+        player2.setName("树叶");
+        player2.setGender("男");
+
+
+        Role role1 = new Role();
+        role1.setName("射手");
+        role1.setDescription("远程AD射手");
+
+        Role role2 = new Role();
+        role2.setName("打野");
+        role2.setDescription("Gank带领全队节奏");
+
+        Role role3 = new Role();
+        role3.setName("法师");
+        role3.setDescription("远程AP");
+        //2)维护数据
+        player1.getRoles().add(role1);
+        player1.getRoles().add(role2);
+
+        player2.getRoles().add(role2);
+        player2.getRoles().add(role3);
+        //3)保存数据
+
+        session.save(player1);
+        session.save(player2);
+
+        //事务提交
+        transaction.commit();
+        session.close();
+        sessionFactory.close();
+
     }
 }
