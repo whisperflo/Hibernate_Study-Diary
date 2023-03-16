@@ -530,4 +530,49 @@ public class HibernateTest {
         sessionFactory.close();
 
     }
+
+
+    @Test
+    //在多对多关系中不要用级联删除
+    public void testManyToManyDelete() {
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        //要删除先查询
+        Transaction transaction = session.beginTransaction();
+        Player player = session.get(Player.class, 2);
+        session.delete(player);
+
+        transaction.commit();
+
+        session.close();
+        sessionFactory.close();
+
+    }
+
+    @Test
+    public void testManyToManyUpdate() {
+
+        SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+        Session session = sessionFactory.openSession();
+
+        Transaction transaction = session.beginTransaction();
+
+//        //让某个玩家拥有某个角色
+//        Player player = session.get(Player.class, 1);
+//        Role role = session.get(Role.class, 3);
+//        player.getRoles().add(role);
+//        session.update(player);
+//        transaction.commit();
+
+        //让某个玩家没有角色
+        Player player = session.get(Player.class, 1);
+        Role role = session.get(Role.class, 1);
+        player.getRoles().remove(role);
+        session.update(player);
+        transaction.commit();
+
+        session.close();
+        sessionFactory.close();
+    }
 }

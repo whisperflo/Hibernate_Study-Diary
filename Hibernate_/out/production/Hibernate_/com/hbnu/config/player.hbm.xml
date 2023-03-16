@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/hibernate-mapping">
+    <class name="com.hbnu.pojo.Player" table="tb_player">
+        <id name="pid">
+            <generator class="native"></generator>
+        </id>
+        <property name="name"/>
+        <property name="gender"/>
+
+
+        <!--多对多的关系-->
+        <!--table属性值表示多对多中第三张表的名称-->
+        <!--级联保存 casecade属性-->
+        <set name="roles" table="tb_pr" cascade="save-update">
+            <!--key标签中的column属性表示当前配置文件所对应的表在第三章中间表中的外键名称-->
+            <key column="pid"></key>
+            <!--多对多
+            class：表示多对多当前配置文件所属类的另外一方的全路径名
+            column：表示多对多中当前配置文件所对应的另外一方的表在第三张中间表中的外键名称
+            -->
+            <many-to-many class="com.hbnu.pojo.Role" column="rid"/>
+        </set>
+    </class>
+</hibernate-mapping>
